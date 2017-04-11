@@ -10,10 +10,10 @@ void main()
 
 	while(1) {
 		char command[100];
-		printf("> ");
+		//printf("> ");
 		scanf("%s", command);
 		if (strcmp(command, "exit") == 0)
-			break;
+			exit(0);
 		pid = fork();
 		switch(pid)
 		{
@@ -23,13 +23,7 @@ void main()
 			case 0:
 				execlp(command, command, 0);
 			default:
-				;
-		}
-		if (command[strlen(command) - 1] == '$' && pid != 0) {
-			int stat_val;
-			pid_t child_pid;
-			
-			child_pid = wait(&stat_val);
+				continue;
 		}
 	}
 }
