@@ -15,6 +15,7 @@ void main()
 		printf("> ");		
 		gets(str);
 		
+		int mode = 1;
 		int i = 0;
 		char *ptr = strtok(str, sep);
 
@@ -24,6 +25,10 @@ void main()
 			ptr = strtok (NULL, sep);
 		}
 		
+		if (i > 1 && strcmp(words[i-1], "$") == 0) {
+			mode = 0;
+			words[i-1] = NULL;
+		} else words[i] = NULL;
 		
 		if (strcmp(words[0], "exit") == 0)
 			exit(0);
@@ -35,9 +40,10 @@ void main()
 				perror("fork failed");
 				exit(1);
 			case 0:
-				execlp(words[0], words[0], 0);
+				execvp(words[0], words);
 			default:
-				wait();
+				if (mode)
+					wait();
 		}
 	}
 }
