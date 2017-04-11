@@ -7,13 +7,27 @@
 void main()
 {
 	pid_t pid;
-
+	char *words[100];
+	char str[100];
+	char sep[] = " ";
+	
 	while(1) {
-		char command[100];
-		//printf("> ");
-		scanf("%s", command);
-		if (strcmp(command, "exit") == 0)
+		printf("> ");		
+		gets(str);
+		
+		int i = 0;
+		char *ptr = strtok(str, sep);
+
+   		while (ptr != NULL)
+		{
+			words[i++] = ptr;
+			ptr = strtok (NULL, sep);
+		}
+		
+		
+		if (strcmp(words[0], "exit") == 0)
 			exit(0);
+		
 		pid = fork();
 		switch(pid)
 		{
@@ -21,9 +35,9 @@ void main()
 				perror("fork failed");
 				exit(1);
 			case 0:
-				execlp(command, command, 0);
+				execlp(words[0], words[0], 0);
 			default:
-				continue;
+				wait();
 		}
 	}
 }
